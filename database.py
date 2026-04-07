@@ -19,7 +19,8 @@ SessionLocal = async_sessionmaker(
 )
 
 async def init_db() -> None:
-    from models.book import Book, Order
+    from models.book import Book
+    from models.order import Order
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)

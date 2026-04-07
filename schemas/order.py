@@ -1,5 +1,7 @@
 from pydantic import BaseModel, ConfigDict, Field
 
+from .book import BookResponse
+
 
 class OrderCreate(BaseModel):
 	customer_name: str = Field(min_length=1, max_length=255)
@@ -15,3 +17,4 @@ class OrderResponse(BaseModel):
 	book_id: int
 	quantity: int
 	status: str
+	book: BookResponse

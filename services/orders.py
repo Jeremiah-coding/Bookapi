@@ -1,9 +1,16 @@
 from fastapi import HTTPException, status
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from models.book import Book, Order
+from models.book import Book
+from models.order import Order
 from schemas import OrderCreate
+
+
+async def list_orders(db: AsyncSession) -> list[Order]:
+    result = await db.execute(select(Order).options(selectinload(Order.book)))
+    return list(result.scalars().all())
 
 
 async def create_order(db: AsyncSession, order_data: OrderCreate) -> Order:
@@ -34,5 +41,6 @@ async def create_order(db: AsyncSession, order_data: OrderCreate) -> Order:
     db.add(new_order)
     await db.commit()
     await db.refresh(new_order)
+    await db.refresh(new_order, attribute_names=["book"])
 
     return new_order
