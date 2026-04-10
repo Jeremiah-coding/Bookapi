@@ -1,11 +1,12 @@
 from fastapi import FastAPI
-from routers import orders
+from routers import books, orders
 from database import init_db
 from middleware.logging import logging_middleware
 
 app = FastAPI(title="Book API")
 app.middleware("http")(logging_middleware)
 
+app.include_router(books.router)
 app.include_router(orders.router)
 
 

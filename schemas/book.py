@@ -1,6 +1,13 @@
 from pydantic import BaseModel, ConfigDict
 
 
+class BookCreate(BaseModel):
+	title: str
+	author: str
+	price: float
+	stock: int
+
+
 class BookResponse(BaseModel):
 	model_config = ConfigDict(from_attributes=True)
 
